@@ -24,10 +24,11 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     # Install optional packages
     apt-get install -y mssql-server-ha && \
     apt-get install -y mssql-server-fts && \
-    apt-get install -y mssql-tools18 unixodbc-dev && \
     # Cleanup the Dockerfile
     apt-get clean && \
     rm -rf /var/lib/apt/lists
+
+RUN sudo ACCEPT_EULA=Y apt-get install mssql-tools18 unixodbc-dev
 
 # Run SQL Server process
 CMD /opt/mssql/bin/sqlservr
