@@ -28,7 +28,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists
 
-RUN sudo ACCEPT_EULA=Y apt-get install mssql-tools18 unixodbc-dev
+RUN curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
 
 # Run SQL Server process
 CMD /opt/mssql/bin/sqlservr
