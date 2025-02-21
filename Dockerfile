@@ -1,12 +1,14 @@
-## https://github.com/microsoft/mssql-docker/blob/master/linux/mssql-server-linux/Dockerfile
-## https://github.com/microsoft/mssql-docker/blob/master/linux/preview/examples/mssql-agent-fts-ha-tools/Dockerfile
+# ## https://github.com/microsoft/mssql-docker/blob/master/linux/mssql-server-linux/Dockerfile
+# ## https://github.com/microsoft/mssql-docker/blob/master/linux/preview/examples/mssql-agent-fts-ha-tools/Dockerfile
 
-# mssql-server-linux
-# Maintainers: Microsoft Corporation (LuisBosquez and twright-msft on GitHub)
-# GitRepo: https://github.com/Microsoft/mssql-docker
+# # mssql-server-linux
+# # Maintainers: Microsoft Corporation (LuisBosquez and twright-msft on GitHub)
+# # GitRepo: https://github.com/Microsoft/mssql-docker
+
+# https://learn.microsoft.com/en-us/sql/linux/quickstart-install-connect-ubuntu
 
 # Base OS layer: Latest Ubuntu LTS.
-FROM ubuntu:16.04
+FROM ubuntu:22.04
 
 # Default SQL Server TCP/Port.
 EXPOSE 1433
@@ -16,8 +18,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
     apt-get install -yq curl apt-transport-https && \
     # Get official Microsoft repository configuration
-    curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
-    curl https://packages.microsoft.com/config/ubuntu/16.04/mssql-server-2019.list | tee /etc/apt/sources.list.d/mssql-server.list && \
+    curl https://packages.microsoft.com/keys/microsoft.asc | tee /etc/apt/trusted.gpg.d/microsoft.asc && \
+    curl https://packages.microsoft.com/config/ubuntu/22.04/mssql-server-2022.list | tee /etc/apt/sources.list.d/mssql-server-2022.list && \
     apt-get update && \
     # Install SQL Server from apt
     apt-get install -y mssql-server && \
@@ -29,8 +31,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     rm -rf /var/lib/apt/lists
 
 # adding custom MS repository
-RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-RUN curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | tee /etc/apt/trusted.gpg.d/microsoft.asc
+RUN curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list > /etc/apt/sources.list.d/mssql-server-2022.list
 
 # install SQL Server tools
 RUN apt-get update && ACCEPT_EULA=Y apt-get install -y mssql-tools
